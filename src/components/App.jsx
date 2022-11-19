@@ -6,6 +6,8 @@ import shortid from 'shortid';
 import { Filter } from './Filter/Filter';
 import { Section } from './Section/Section';
 
+const LS_KEY = 'contact';
+
 export class App extends Component {
   state = {
     contacts: [
@@ -16,6 +18,18 @@ export class App extends Component {
     ],
     filter: '',
   };
+
+  componentDidMount() {
+    const dataNumbers = localStorage.getItem(LS_KEY);
+
+    if (dataNumbers) {
+      this.setState({ contacts: JSON.parse(dataNumbers) });
+    }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem(LS_KEY, JSON.stringify(this.state.contacts));
+  }
 
   formSubmitHandler = data => {
     const normalizedName = data.name.toLowerCase();
